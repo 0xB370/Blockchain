@@ -40,6 +40,25 @@ Blockchain.prototype.hashBlock = function(previousBlockHash, currentBlockData, n
     return sha256(data);
 }
 
+/**
+ * 
+ * @param {string} previousBlockHash 
+ * @param {string} currentBlockData 
+ * @returns integer
+ * 
+ * Continuously hash a block data until it achieves a string that starts with '0000', 
+ * then returns the nonce used to generate that hash.
+ */
+Blockchain.prototype.proofOfWork = function(previousBlockHash, currentBlockData) {
+    let nonce = 0;
+    let hash = this.hashBlock(previousBlockHash, currentBlockData, nonce);
+    while (hash.substring(0,4) !== '0000') {
+        nonce++;
+        hash = this.hashBlock(previousBlockHash, currentBlockData, nonce);
+    }
+    return nonce;
+}
+
 
 
 module.exports = Blockchain;
